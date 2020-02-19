@@ -4,6 +4,7 @@
       <h1 class="register-form__title">Вход или регистрация</h1>
       <label class="register-form__label">Номер телефона</label>
       <input
+        ref="phone"
         v-mask="'+7(###)###-##-##'"
         v-model.trim="$v.phone.$model"
         placeholder="+7(___)___-__-__"
@@ -81,6 +82,9 @@
           this.focusDigit(0);
         } else if (this.getCodeInterval){
           clearInterval(this.getCodeInterval);
+          this.focusPhone();
+        } else {
+          this.focusPhone();
         }
       },
       codeDigits(val) {
@@ -88,6 +92,9 @@
           this.submitCode();
         }
       }
+    },
+    mounted() {
+      this.focusPhone();
     },
     methods: {
       focusDigit(index) {
@@ -97,6 +104,11 @@
             digits[index].focus();
           });
         }
+      },
+      focusPhone() {
+        this.$nextTick(() => {
+          this.$refs.phone.focus();
+        });
       },
       submitPhone() {
         // TODO: добавить AJAX отправку телефона

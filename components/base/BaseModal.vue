@@ -1,5 +1,5 @@
 <template>
-  <div v-show="isVisible" @click.self="close" class="modal">
+  <div v-if="isVisible" @click.self="close" class="modal">
     <div class="modal__body">
       <div @click="close" class="modal__close" title="Close">
         <close-icon class="modal__close-icon" />
