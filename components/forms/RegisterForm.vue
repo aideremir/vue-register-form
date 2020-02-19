@@ -3,16 +3,16 @@
     <form v-show="!isPhoneSubmitted" @submit.prevent="submitPhone">
       <h1 class="register-form__title">Вход или регистрация</h1>
       <label class="register-form__label">Номер телефона</label>
-      <input
+      <masked-input
         ref="phone"
         type="tel"
-        v-mask="'+7(###)###-##-##'"
-        v-model.trim="$v.phone.$model"
+        v-model="phone"
+        mask="\+\7(111)111-11-11"
         placeholder="+7(___)___-__-__"
         class="register-form__input"
       />
-      <button :disabled="$v.phone.$error" type="submit" class="register-form__button">Продолжить</button>
-      <div v-show="$v.phone.$error" class="register-form__error">
+      <button :disabled="isBtnDisabled" type="submit" class="register-form__button">Продолжить</button>
+      <div v-show="showError" class="register-form__error">
         Для продолжения введите корректный номер телефона
       </div>
       <div class="register-form__info">
@@ -35,8 +35,8 @@
           class="register-form__digit"
         >
           <input
-            :type="$mq === 'sm' ? 'tel' : 'number'"
-            v-model="codeDigits[index]"
+            type="tel"
+            :value="codeDigits[index]"
             :id="index"
             @keyup.delete="focusPrev(index)"
             @input="focusNext(index, $event)"
@@ -59,6 +59,7 @@
 </template>
 
 <script>
+  // import MaskedInput from 'vue-masked-input';
   import { required, minLength } from 'vuelidate/lib/validators';
 
   export default {
@@ -76,6 +77,22 @@
       phone: {
         required,
         minLength: minLength(16)
+      }
+    },
+    computed: {
+      isBtnDisabled() {
+        if(this.phone.indexOf("_") !== -1){
+          return this.phone.length !== 0;
+        } else {
+          if(this.phone.length === 0) {
+            return true
+          } else {
+            return this.phone.length < 3;
+          }
+        }
+      },
+      showError () {
+        return this.isBtnDisabled && this.phone !== '+7(___)___-__-__';
       }
     },
     watch: {
@@ -104,11 +121,18 @@
     },
     methods: {
       focusNext(index, event = {}) {
-        if (event.inputType !== 'deleteContentBackward') {
-          this.focusDigit(index + 1);
+        const value = event.target.value;
+        if (/^\d$/.test(value)) {
+          this.$set(this.codeDigits, index, value);
+
+          if (event.inputType !== 'deleteContentBackward') {
+            this.focusDigit(index + 1);
+          }
         }
+        this.$forceUpdate();
       },
       focusPrev(index) {
+        this.$set(this.codeDigits, index, '');
         this.focusDigit(index - 1);
       },
       focusDigit(index) {
@@ -121,7 +145,8 @@
       },
       focusPhone() {
         this.$nextTick(() => {
-          this.$refs.phone.focus();
+          this.$refs.phone.$el.focus();
+          this.$refs.phone.mouseUp();
         });
       },
       submitPhone() {

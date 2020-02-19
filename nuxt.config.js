@@ -29,7 +29,7 @@ module.exports = {
    ** Plugins to load before mounting the App
    */
   plugins: [
-    '~/plugins/mask.js',
+    { src: '~/plugins/maskedInput.js', ssr: false },
     '~/plugins/vuelidate.js',
   ],
   /*
@@ -37,16 +37,8 @@ module.exports = {
    */
   modules: [
     'svg-to-vue-component/nuxt',
-    'portal-vue/nuxt',
-    'nuxt-mq'
+    'portal-vue/nuxt'
   ],
-  'mq': {
-    defaultBreakpoint: 'default',
-    breakpoints: {
-      sm: 520,
-      lg: Infinity
-    }
-  },
   /*
   ** Build configuration
   */
