@@ -5,6 +5,7 @@
       <label class="register-form__label">Номер телефона</label>
       <input
         ref="phone"
+        type="tel"
         v-mask="'+7(###)###-##-##'"
         v-model.trim="$v.phone.$model"
         placeholder="+7(___)___-__-__"
@@ -22,7 +23,7 @@
     <form v-show="isPhoneSubmitted" @submit.prevent="submitCode">
       <h1 class="register-form__title">Введите код</h1>
       <div class="register-form__message">
-        Мы отправили код на {{ phone }}
+        Мы отправили код на <span class="register-form__phone">{{ phone }}</span>
       </div>
       <div class="register-form__link" @click="showPhoneForm">
         Изменить
@@ -34,11 +35,11 @@
           class="register-form__digit"
         >
           <input
-            type="number"
+            :type="$mq === 'sm' ? 'tel' : 'number'"
             v-model="codeDigits[index]"
-            v-mask="'#'"
-            @input="focusNext(index, $event)"
+            :id="index"
             @keyup.delete="focusPrev(index)"
+            @input="focusNext(index, $event)"
             maxlength="1"
           />
         </div>
@@ -51,7 +52,7 @@
         Отправить код ещё раз
       </div>
       <div v-else class="register-form__repeat">
-        Получить новый код можно через {{ seconds }} сек
+        Получить новый код можно через&nbsp;{{ seconds }}&nbsp;сек
       </div>
     </form>
   </div>
@@ -192,6 +193,10 @@
       line-height: 20px;
     }
 
+    &__phone {
+      white-space: nowrap;
+    }
+
     &__link {
       margin-bottom: 35px;
       font-size: 20px;
@@ -210,6 +215,7 @@
       font-size: 20px;
       line-height: 20px;
       color: #000000;
+      box-shadow: none;
 
       @media(max-width: 520px) {
         font-size: 18px;
@@ -258,6 +264,7 @@
         line-height: 20px;
         text-align: center;
         border: 1px solid #DCE4EE;
+        box-shadow: none;
       }
     }
 

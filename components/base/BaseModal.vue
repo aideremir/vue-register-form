@@ -50,10 +50,6 @@
     &.fade-enter,
     &.fade-leave-to {
       opacity: 0;
-
-      .modal__body {
-        transform: translateY(100%);
-      }
     }
 
     @media(max-width: 520px) {
@@ -65,8 +61,6 @@
       padding: 54px 60px 55px 48px;
       background: #FFFFFF;
       box-shadow: 0 7px 70px rgba(0, 50, 123, 0.1);
-      transition: all 0.3s ease;
-      transform: translateY(0);
 
       @media(max-width: 520px) {
         width: 100%;

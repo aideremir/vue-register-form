@@ -37,8 +37,16 @@ module.exports = {
    */
   modules: [
     'svg-to-vue-component/nuxt',
-    'portal-vue/nuxt'
+    'portal-vue/nuxt',
+    'nuxt-mq'
   ],
+  'mq': {
+    defaultBreakpoint: 'default',
+    breakpoints: {
+      sm: 520,
+      lg: Infinity
+    }
+  },
   /*
   ** Build configuration
   */
