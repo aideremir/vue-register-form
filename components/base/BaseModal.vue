@@ -1,12 +1,14 @@
 <template>
-  <div v-if="isVisible" @click.self="close" class="modal">
-    <div class="modal__body">
-      <div @click="close" class="modal__close" title="Close">
-        <close-icon class="modal__close-icon" />
+  <transition name="fade">
+    <div v-if="isVisible" @click.self="close" class="modal">
+      <div class="modal__body">
+        <div @click="close" class="modal__close" title="Close">
+          <close-icon class="modal__close-icon" />
+        </div>
+        <slot />
       </div>
-      <slot />
     </div>
-  </div>
+  </transition>
 </template>
 
 <script>
@@ -42,6 +44,17 @@
     justify-content: center;
     background: rgba(249, 250, 253, 0.91);
     z-index: 10;
+    opacity: 1;
+    transition: all 0.3s ease;
+
+    &.fade-enter,
+    &.fade-leave-to {
+      opacity: 0;
+
+      .modal__body {
+        transform: translateY(100%);
+      }
+    }
 
     @media(max-width: 520px) {
       align-items: stretch;
@@ -52,6 +65,8 @@
       padding: 54px 60px 55px 48px;
       background: #FFFFFF;
       box-shadow: 0 7px 70px rgba(0, 50, 123, 0.1);
+      transition: all 0.3s ease;
+      transform: translateY(0);
 
       @media(max-width: 520px) {
         width: 100%;

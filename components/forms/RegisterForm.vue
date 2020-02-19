@@ -29,14 +29,16 @@
       </div>
       <div ref="digits" class="register-form__digits">
         <div
-          v-for="index of 4"
+          v-for="index of [0, 1, 2, 3]"
           :key="index"
           class="register-form__digit"
         >
           <input
-            v-model="codeDigits[index - 1]"
+            type="number"
+            v-model="codeDigits[index]"
             v-mask="'#'"
-            @input="focusDigit(index)"
+            @input="focusNext(index, $event)"
+            @keyup.delete="focusPrev(index)"
             maxlength="1"
           />
         </div>
@@ -100,6 +102,14 @@
       this.focusPhone();
     },
     methods: {
+      focusNext(index, event = {}) {
+        if (event.inputType !== 'deleteContentBackward') {
+          this.focusDigit(index + 1);
+        }
+      },
+      focusPrev(index) {
+        this.focusDigit(index - 1);
+      },
       focusDigit(index) {
         const digits = this.$refs.digits.querySelectorAll('input');
         if (digits && digits[index]) {
