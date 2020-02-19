@@ -79,6 +79,9 @@
       isPhoneSubmitted(val) {
         if (val === true) {
           this.getCodeInterval = setInterval(this.tick, 1000);
+          this.codeDigits = ['', '', '', ''];
+          this.seconds = 60;
+          this.isCodeSubmitted = false;
           this.focusDigit(0);
         } else if (this.getCodeInterval){
           clearInterval(this.getCodeInterval);
