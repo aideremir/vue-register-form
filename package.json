@@ -15,7 +15,7 @@
   "dependencies": {
     "less": "^3.11.1",
     "less-loader": "^5.0.0",
-    "nuxt": "^2.0.0",
+    "nuxt": "^2.15.8",
     "portal-vue": "^2.1.7",
     "svg-to-vue-component": "^0.3.8",
     "vue-masked-input": "^0.5.2",
